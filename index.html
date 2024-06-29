@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<style>
+		.box {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			padding: 10px;
+		}
+		video {
+			width: 100%;
+			max-width: 640px;
+			height: auto;
+			background-color: #000;
+			margin-bottom: 10px;
+		}
+		button {
+			margin: 5px;
+			padding: 10px;
+			font-size: 16px;
+		}
+		@media (min-width: 768px) {
+			.button-container {
+				display: flex;
+				justify-content: center;
+				gap: 10px;
+			}
+			button {
+				flex: 1;
+			}
+		}
+	</style>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Camera</title>
+</head>
+<body>
+<div class="box">
+	<video id="video" autoplay></video>
+	<div class="button-container">
+		<button onclick="openCamera()">Open Camera</button>
+		<button onclick="closeCamera()">Close Camera</button>
+	</div>
+</div>
+<script>
+	let stream;
+
+	async function openCamera() {
+		stream = await navigator.mediaDevices.getUserMedia({video: true});
+		document.getElementById('video').srcObject = stream;
+	}
+
+	function closeCamera() {
+		if (stream) {
+			const tracks = stream.getTracks();
+			tracks.forEach(track => track.stop());
+			document.getElementById('video').srcObject = null;
+		}
+	}
+</script>
+</body>
+</html>
